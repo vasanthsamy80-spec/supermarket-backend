@@ -4,7 +4,7 @@ import com.supermarket.billing.model.User;
 import com.supermarket.billing.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
+import org.springframework.http.ResponseEntity;
 @RestController
 @CrossOrigin(origins = "*")
 @RequestMapping("/auth")
@@ -20,17 +20,19 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public User login(@RequestBody User user) {
+    public ResponseEntity<?> login(@RequestBody User user) {
 
         User existing = repo.findByUsername(user.getUsername());
 
-        if (existing != null &&
-                existing.getPassword().equals(user.getPassword())) {
-
-            return existing;   // returns username + role
+        if (existing == null) {
+            return ResponseEntity.status(401).body("User not found");
         }
 
-        return null;
+        if (!existing.getPassword().equals(user.getPassword())) {
+            return ResponseEntity.status(401).body("Wrong password");
+        }
+
+        return ResponseEntity.ok(existing);
     }
     @PutMapping("/reset-password")
     public String resetPassword(@RequestBody User user) {
