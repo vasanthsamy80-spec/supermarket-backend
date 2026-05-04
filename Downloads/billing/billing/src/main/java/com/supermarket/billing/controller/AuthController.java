@@ -45,5 +45,11 @@ public class AuthController {
 
         return "User Not Found";
     }
+    @GetMapping("/init")
+    public String initUsers() {
+        repo.save(new User("admin", "admin", "ADMIN"));
+        repo.save(new User("staff", "staff", "STAFF"));
+        return "Users Created";
+    }
 
 }

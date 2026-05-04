@@ -14,6 +14,15 @@ public class User {
     private String password;
     private String role;
 
+
+    public User() {}   // required
+
+    public User(String username, String password, String role) {
+        this.username = username;
+        this.password = password;
+        this.role = role;
+    }
+
     // ✅ GETTERS
 
     public Long getId() {
